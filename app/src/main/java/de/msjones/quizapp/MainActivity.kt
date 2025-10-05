@@ -1,10 +1,12 @@
 package de.msjones.quizapp
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,6 +24,24 @@ class MainActivity : ComponentActivity() {
         val view = binding.root
         setContentView(view)
 
+        // Method to hide status bar
+        hideStatusBar()
+
+        binding.btnStart.setOnClickListener {
+            if (binding.textName.text.toString().isEmpty()) {
+                Toast.makeText(this, "Bitte gib deinen Namen ein", Toast.LENGTH_LONG).show()
+            } else {
+                val intent = Intent(this, QuizQuestionsActivity::class.java)
+                intent.putExtra(Constants.USER_NAME, binding.textName.text.toString())
+                startActivity(intent)
+                finish()
+            }
+        }
+    }
+
+
+
+    fun hideStatusBar() {
         if (Build.VERSION.SDK_INT < 30) {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
         } else {

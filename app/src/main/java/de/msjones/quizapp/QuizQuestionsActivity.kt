@@ -1,6 +1,7 @@
 package de.msjones.quizapp
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import de.msjones.quizapp.databinding.ActivityQuizQuestionsBinding
@@ -18,6 +19,7 @@ class QuizQuestionsActivity : ComponentActivity() {
 
         userName = intent.getStringExtra(Constants.USER_NAME)
 
-        Toast.makeText(this, "Hallo ${userName}!", Toast.LENGTH_LONG).show()
+        val questionList = Constants.getQuestions()
+        Log.i("Fragen", "${questionList.size}")
     }
 }

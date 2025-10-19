@@ -5,10 +5,10 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.core.content.ContextCompat
 import de.msjones.quizapp.databinding.ActivityQuizQuestionsBinding
-import java.util.ArrayList
 
 class QuizQuestionsActivity : ComponentActivity(), View.OnClickListener {
     private lateinit var binding: ActivityQuizQuestionsBinding
@@ -17,6 +17,7 @@ class QuizQuestionsActivity : ComponentActivity(), View.OnClickListener {
     private var currentPosition = 1
     private var questionList: List<Question>? = null
     private var selectedOption = 0
+    private var correctAnswers = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +33,7 @@ class QuizQuestionsActivity : ComponentActivity(), View.OnClickListener {
         binding.tvOptionTwo.setOnClickListener(this)
         binding.tvOptionThree.setOnClickListener(this)
         binding.tvOptionFour.setOnClickListener(this)
+        binding.btnSubmit.setOnClickListener(this)
     }
 
     private fun setQuestion() {
@@ -49,6 +51,7 @@ class QuizQuestionsActivity : ComponentActivity(), View.OnClickListener {
         binding.tvOptionTwo.text = question.optionTwo
         binding.tvOptionThree.text = question.optionThree
         binding.tvOptionFour.text = question.optionFour
+        binding.btnSubmit.text = "BESTÄTIGEN"
     }
 
     private fun defaultOptionView() {
@@ -81,6 +84,60 @@ class QuizQuestionsActivity : ComponentActivity(), View.OnClickListener {
             }
             R.id.tvOptionFour -> {
                 selectedOptionView(binding.tvOptionFour, 4)
+            }
+            R.id.btnSubmit -> {
+                if (selectedOption == 0) {
+                    ++currentPosition
+
+                    when {
+                        currentPosition <= questionList!!.size -> {
+                            setQuestion()
+                        } else -> {
+                        Toast.makeText(this, "Quiz erfolgreich beendet", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                } else {
+                    val question = questionList?.get(currentPosition-1)
+                    if (question!!.correctAnswer != selectedOption) {
+                        answerView(selectedOption, R.drawable.wrong_option_border)
+                    } else {
+                        ++correctAnswers
+                    }
+                    answerView(question.correctAnswer, R.drawable.correct_option_border)
+
+                    if (currentPosition == questionList!!.size) {
+                        binding.btnSubmit.text = "BEENDEN"
+                    } else {
+                        binding.btnSubmit.text = "NÄCHSTE FRAGE"
+                    }
+                    selectedOption = 0;
+                 }
+
+            }
+        }
+    }
+
+    private fun answerView(answer: Int, drawableView: Int) {
+        when (answer) {
+            1 -> {
+                binding.tvOptionOne.background = ContextCompat.getDrawable(
+                    this, drawableView
+                )
+            }
+            2 -> {
+                binding.tvOptionTwo.background = ContextCompat.getDrawable(
+                    this, drawableView
+                )
+            }
+            3 -> {
+                binding.tvOptionThree.background = ContextCompat.getDrawable(
+                    this, drawableView
+                )
+            }
+            4 -> {
+                binding.tvOptionFour.background = ContextCompat.getDrawable(
+                    this, drawableView
+                )
             }
         }
     }

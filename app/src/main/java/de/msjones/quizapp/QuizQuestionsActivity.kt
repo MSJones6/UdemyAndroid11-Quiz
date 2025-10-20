@@ -1,5 +1,6 @@
 package de.msjones.quizapp
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -76,15 +77,19 @@ class QuizQuestionsActivity : ComponentActivity(), View.OnClickListener {
             R.id.tvOptionOne -> {
                 selectedOptionView(binding.tvOptionOne, 1)
             }
+
             R.id.tvOptionTwo -> {
                 selectedOptionView(binding.tvOptionTwo, 2)
             }
+
             R.id.tvOptionThree -> {
                 selectedOptionView(binding.tvOptionThree, 3)
             }
+
             R.id.tvOptionFour -> {
                 selectedOptionView(binding.tvOptionFour, 4)
             }
+
             R.id.btnSubmit -> {
                 if (selectedOption == 0) {
                     ++currentPosition
@@ -92,12 +97,21 @@ class QuizQuestionsActivity : ComponentActivity(), View.OnClickListener {
                     when {
                         currentPosition <= questionList!!.size -> {
                             setQuestion()
-                        } else -> {
-                        Toast.makeText(this, "Quiz erfolgreich beendet", Toast.LENGTH_LONG).show()
+                        }
+
+                        else -> {
+                            val intent = Intent(this, ResultActivity::class.java)
+
+                            intent.putExtra(Constants.USER_NAME, userName)
+                            intent.putExtra(Constants.CORRECT_ANSWERS, correctAnswers)
+                            intent.putExtra(Constants.TOTAL_QUESTIONS, questionList!!.size)
+
+                            startActivity(intent)
+                            finish()
                         }
                     }
                 } else {
-                    val question = questionList?.get(currentPosition-1)
+                    val question = questionList?.get(currentPosition - 1)
                     if (question!!.correctAnswer != selectedOption) {
                         answerView(selectedOption, R.drawable.wrong_option_border)
                     } else {
@@ -111,7 +125,7 @@ class QuizQuestionsActivity : ComponentActivity(), View.OnClickListener {
                         binding.btnSubmit.text = "NÄCHSTE FRAGE"
                     }
                     selectedOption = 0;
-                 }
+                }
 
             }
         }
@@ -124,16 +138,19 @@ class QuizQuestionsActivity : ComponentActivity(), View.OnClickListener {
                     this, drawableView
                 )
             }
+
             2 -> {
                 binding.tvOptionTwo.background = ContextCompat.getDrawable(
                     this, drawableView
                 )
             }
+
             3 -> {
                 binding.tvOptionThree.background = ContextCompat.getDrawable(
                     this, drawableView
                 )
             }
+
             4 -> {
                 binding.tvOptionFour.background = ContextCompat.getDrawable(
                     this, drawableView

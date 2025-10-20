@@ -20,6 +20,8 @@ class QuizQuestionsActivity : ComponentActivity(), View.OnClickListener {
     private var selectedOption = 0
     private var correctAnswers = 0
 
+    private var canSelect = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityQuizQuestionsBinding.inflate(layoutInflater)
@@ -93,6 +95,7 @@ class QuizQuestionsActivity : ComponentActivity(), View.OnClickListener {
             R.id.btnSubmit -> {
                 if (selectedOption == 0) {
                     ++currentPosition
+                    canSelect = true
 
                     when {
                         currentPosition <= questionList!!.size -> {
@@ -112,6 +115,7 @@ class QuizQuestionsActivity : ComponentActivity(), View.OnClickListener {
                     }
                 } else {
                     val question = questionList?.get(currentPosition - 1)
+                    canSelect = false
                     if (question!!.correctAnswer != selectedOption) {
                         answerView(selectedOption, R.drawable.wrong_option_border)
                     } else {
@@ -160,13 +164,15 @@ class QuizQuestionsActivity : ComponentActivity(), View.OnClickListener {
     }
 
     private fun selectedOptionView(tv: TextView, selectedOptionNum: Int) {
-        defaultOptionView()
-        selectedOption = selectedOptionNum
-        tv.setTextColor(Color.parseColor("#363A43"))
-        tv.setTypeface(tv.typeface, Typeface.BOLD)
-        tv.background = ContextCompat.getDrawable(
-            this,
-            R.drawable.selected_option_border
-        )
+        if (canSelect) {
+            defaultOptionView()
+            selectedOption = selectedOptionNum
+            tv.setTextColor(Color.parseColor("#363A43"))
+            tv.setTypeface(tv.typeface, Typeface.BOLD)
+            tv.background = ContextCompat.getDrawable(
+                this,
+                R.drawable.selected_option_border
+            )
+        }
     }
 }

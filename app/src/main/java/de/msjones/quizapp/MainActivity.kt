@@ -41,7 +41,6 @@ class MainActivity : ComponentActivity() {
 
         binding.textName.setOnKeyListener { v, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                // TODO: Deine Aktion hier
                 binding.btnStart.performClick()
                 true // true = Event wurde behandelt
             } else {

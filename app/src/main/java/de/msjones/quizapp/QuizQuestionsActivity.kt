@@ -30,6 +30,8 @@ class QuizQuestionsActivity : ComponentActivity(), View.OnClickListener {
 
         userName = intent.getStringExtra(Constants.USER_NAME)
 
+        questionList = Constants.getQuestions()
+        binding.progressBar.max=questionList!!.size
         setQuestion()
 
         binding.tvOptionOne.setOnClickListener(this)
@@ -42,7 +44,6 @@ class QuizQuestionsActivity : ComponentActivity(), View.OnClickListener {
     private fun setQuestion() {
         defaultOptionView()
 
-        questionList = Constants.getQuestions()
         var question = questionList!![currentPosition - 1]
 
         binding.progressBar.progress = currentPosition

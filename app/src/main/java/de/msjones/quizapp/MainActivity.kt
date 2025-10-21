@@ -3,6 +3,7 @@ package de.msjones.quizapp
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController
@@ -37,6 +38,17 @@ class MainActivity : ComponentActivity() {
                 finish()
             }
         }
+
+        binding.textName.setOnKeyListener { v, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                // TODO: Deine Aktion hier
+                binding.btnStart.performClick()
+                true // true = Event wurde behandelt
+            } else {
+                false
+            }
+        }
+
     }
 
 
